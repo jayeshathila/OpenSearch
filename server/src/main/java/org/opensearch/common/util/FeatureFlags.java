@@ -8,6 +8,7 @@
 
 package org.opensearch.common.util;
 
+import org.opensearch.common.settings.FeatureFlagSettings;
 import org.opensearch.common.settings.Setting;
 import org.opensearch.common.settings.Setting.Property;
 import org.opensearch.common.settings.Settings;
@@ -87,7 +88,13 @@ public class FeatureFlags {
             // TODO: Remove the if condition once FeatureFlags are only supported via opensearch.yml
             return true;
         }
-        return settings != null && settings.getAsBoolean(featureFlagName, false);
+
+        boolean defaultValue = false;
+        if (settings != null && FeatureFlagSettings.FEATURE_FLAG_MAPPING.get(featureFlagName) != null) {
+            defaultValue = (boolean) FeatureFlagSettings.FEATURE_FLAG_MAPPING.get(featureFlagName).getDefault(settings);
+        }
+
+    return settings != null && settings.getAsBoolean(featureFlagName, defaultValue);
     }
 
     public static final Setting<Boolean> SEGMENT_REPLICATION_EXPERIMENTAL_SETTING = Setting.boolSetting(
@@ -100,7 +107,7 @@ public class FeatureFlags {
 
     public static final Setting<Boolean> EXTENSIONS_SETTING = Setting.boolSetting(EXTENSIONS, false, Property.NodeScope);
 
-    public static final Setting<Boolean> IDENTITY_SETTING = Setting.boolSetting(IDENTITY, false, Property.NodeScope);
+    public static final Setting<Boolean> IDENTITY_SETTING = Setting.boolSetting(IDENTITY, true, Property.NodeScope);
 
     public static final Setting<Boolean> TELEMETRY_SETTING = Setting.boolSetting(TELEMETRY, false, Property.NodeScope);
 

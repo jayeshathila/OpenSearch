@@ -470,6 +470,8 @@ public class Node implements Closeable {
             FeatureFlags.initializeFeatureFlags(settings);
 
             final List<IdentityPlugin> identityPlugins = new ArrayList<>();
+            // Todo: Remove after testing
+            logger.info("jayehh-feature-flag-test: " + FeatureFlags.IDENTITY + " value: " + FeatureFlags.isEnabled(FeatureFlags.IDENTITY));
             if (FeatureFlags.isEnabled(FeatureFlags.IDENTITY)) {
                 // If identity is enabled load plugins implementing the extension point
                 logger.info("Identity on so found plugins implementing: " + pluginsService.filterPlugins(IdentityPlugin.class).toString());

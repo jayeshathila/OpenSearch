@@ -14,7 +14,9 @@ import org.opensearch.common.util.FeatureFlags;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Encapsulates all valid feature flag level settings.
@@ -44,4 +46,6 @@ public class FeatureFlagSettings extends AbstractScopedSettings {
             )
         )
     );
+
+    public static final Map<String, Setting<?>> FEATURE_FLAG_MAPPING = BUILT_IN_FEATURE_FLAGS.stream().collect(Collectors.toMap(Setting::getKey, features -> features  ));
 }
